@@ -16,7 +16,7 @@ interface Props {
 
 const AnimalCard: React.FC<Props> = ({ animal }) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="bg-white rounded-lg overflow-hidden">
       <img src={animal.image} alt={animal.name} className="w-full h-48 object-cover" />
       <div className="p-6">
         <h2 className="text-2xl font-semibold mb-2">{animal.name}</h2>
