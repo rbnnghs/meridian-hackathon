@@ -1,11 +1,10 @@
-// pages/animals.tsx
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import AnimalCard from '../components/AnimalCard'
+import { useState } from 'react'
 
-// Sample data - In a real application, fetch this data from an API or database
 const animals = [
     {
       id: 1,
@@ -128,10 +127,16 @@ const animals = [
       status: 'Endangered',
     },
   ]  
-
+  
 const Animals: NextPage = () => {
+  const [filter, setFilter] = useState('All')
+
+  const filteredAnimals = filter === 'All' 
+    ? animals 
+    : animals.filter(animal => animal.status === filter)
+
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-50 to-green-50">
       <Head>
         <title>FaunaChain - Support Endangered Animals</title>
         <meta name="description" content="Browse and support endangered animals through FaunaChain's personalized rescue missions." />
@@ -140,12 +145,41 @@ const Animals: NextPage = () => {
 
       <Navbar />
 
-      <main className="flex-grow bg-gray-100">
+      <main className="flex-grow">
         <section className="py-20">
           <div className="container mx-auto px-4">
-            <h1 className="text-3xl md:text-5xl font-bold text-center mb-12">Endangered Animals</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {animals.map((animal) => (
+            <h1 className="text-4xl md:text-6xl font-bold text-center mb-6 text-gray-800">
+              Endangered Animals
+            </h1>
+            <p className="text-xl text-center mb-12 text-gray-600">
+              Discover and support animals in need of our help and protection.
+            </p>
+
+            <div className="mb-8 flex justify-center">
+              <div className="inline-flex rounded-md shadow-sm" role="group">
+                {['All', 'Critical', 'Endangered', 'Vulnerable'].map((status) => (
+                  <button
+                    key={status}
+                    type="button"
+                    onClick={() => setFilter(status)}
+                    className={`px-4 py-2 text-sm font-medium ${
+                      filter === status
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                    } border border-gray-200 ${
+                      status === 'All' ? 'rounded-l-lg' : ''
+                    } ${
+                      status === 'Vulnerable' ? 'rounded-r-lg' : ''
+                    }`}
+                  >
+                    {status}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {filteredAnimals.map((animal) => (
                 <AnimalCard key={animal.id} animal={animal} />
               ))}
             </div>
