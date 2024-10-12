@@ -2,7 +2,7 @@ import base64
 import json
 import glob
 import os
-
+ 
 # Function to convert image to base64 and wrap in JSON format
 def image_to_json(image_path):
     # Open the image file in binary mode
