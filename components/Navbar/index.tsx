@@ -109,9 +109,9 @@ const Navbar: React.FC<NavbarProps> = ({ theme = 'default' }) => {
               <NavLink href="/animals" baseColor={textColor}>
                 Animals
               </NavLink>
-              <NavLink href="/dashboard" baseColor={textColor}>
+              {/* <NavLink href="/dashboard" baseColor={textColor}>
                 Dashboard
-              </NavLink>
+              </NavLink> */}
               <div className="relative group">
                 <button
                   className={`flex items-center text-sm md:text-base font-medium ${textColor} hover:text-green-600 focus:outline-none`}
