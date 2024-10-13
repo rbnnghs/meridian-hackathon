@@ -10,7 +10,7 @@ interface NFTCardProps {
 
 const NFTCard: React.FC<NFTCardProps> = ({ nft }) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="bg-white rounded-lg overflow-hidden">
       <div className="relative w-full h-48">
         <Image
           src={nft.animal.image}

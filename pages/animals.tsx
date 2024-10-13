@@ -156,7 +156,7 @@ const animals = [
               </p>
   
               <div className="mb-8 flex justify-center">
-                <div className="inline-flex rounded-md shadow-sm" role="group">
+                <div className="inline-flex rounded-md" role="group">
                   {['All', 'Critical', 'Endangered', 'Vulnerable'].map((status) => (
                     <button
                       key={status}

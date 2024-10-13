@@ -49,14 +49,14 @@ const Navbar: React.FC<NavbarProps> = ({ theme = 'default' }) => {
 
     if (theme === 'transparent') {
       if (isScrolled) {
-        return `${baseClasses} bg-white shadow-md`;
+        return `${baseClasses} bg-white`;
       }
       return `${baseClasses} bg-transparent`;
     }
 
     // Default theme behavior
     if (isScrolled) {
-      return `${baseClasses} bg-white shadow-md`;
+      return `${baseClasses} bg-white`;
     }
     return `${baseClasses} bg-transparent`;
   };
@@ -102,7 +102,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme = 'default' }) => {
                 >
                   More <ChevronDown className="ml-1 h-4 w-4" />
                 </button>
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md py-1 z-10 shadow-lg hidden group-hover:block">
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md py-1 z-10 hidden group-hover:block">
                   <Link href="/about">
                     <span
                       className={`block px-4 py-2 text-sm ${
@@ -156,7 +156,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme = 'default' }) => {
 
       {isOpen && (
         <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-md">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white">
             <NavLink href="/" baseColor="text-gray-700">
               Home
             </NavLink>

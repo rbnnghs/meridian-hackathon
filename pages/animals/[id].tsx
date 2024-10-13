@@ -107,15 +107,15 @@ const AnimalDetail: NextPage<AnimalDetailProps> = ({ animal, relatedMissions }) 
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-6">Impact Statistics</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-gray-100 p-6 rounded-lg shadow">
+              <div className="bg-gray-100 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-2">Rescued Animals</h3>
                 <p className="text-4xl font-bold">{relatedMissions.reduce((acc, mission) => acc + mission.impactStatistics.rescuedAnimals, 0)}</p>
               </div>
-              <div className="bg-gray-100 p-6 rounded-lg shadow">
+              <div className="bg-gray-100 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-2">Habitat Restored (hectares)</h3>
                 <p className="text-4xl font-bold">{relatedMissions.reduce((acc, mission) => acc + mission.impactStatistics.habitatRestored, 0)}</p>
               </div>
-              <div className="bg-gray-100 p-6 rounded-lg shadow">
+              <div className="bg-gray-100 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-2">Anti-Poaching Patrols</h3>
                 <p className="text-4xl font-bold">{relatedMissions.reduce((acc, mission) => acc + mission.impactStatistics.antiPoachingPatrols, 0)}</p>
               </div>
@@ -129,7 +129,7 @@ const AnimalDetail: NextPage<AnimalDetailProps> = ({ animal, relatedMissions }) 
             <h2 className="text-3xl font-bold mb-6">Related Rescue Missions</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedMissions.map((mission) => (
-                <div key={mission.id} className="bg-white p-6 rounded-lg shadow">
+                <div key={mission.id} className="bg-white p-6 rounded-lg">
                   <h3 className="text-xl font-semibold mb-2">{mission.title}</h3>
                   <p className="text-gray-700 mb-2">{mission.description}</p>
                   <p className="text-gray-600 mb-2"><strong>Status:</strong> {mission.status}</p>

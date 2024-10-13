@@ -56,7 +56,7 @@ const MissionsPage: NextPage = () => {
             {/* Missions Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredMissions.map((mission) => (
-                <div key={mission.id} className="bg-white p-6 rounded-lg shadow">
+                <div key={mission.id} className="bg-white p-6 rounded-lg">
                   <h2 className="text-2xl font-semibold mb-2">{mission.title}</h2>
                   <p className="text-gray-700 mb-2">{mission.description}</p>
                   <p className="text-gray-600 mb-2"><strong>Status:</strong> {mission.status}</p>
