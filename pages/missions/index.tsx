@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import { missions, RescueMission } from '../../data/missions';
+import { missions } from '../../data/missions';
 import Link from 'next/link';
 import { useState } from 'react';
 

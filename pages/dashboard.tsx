@@ -1,5 +1,3 @@
-// pages/dashboard.tsx
-
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Navbar from '../components/Navbar';
