@@ -1,0 +1,18 @@
+cargo-features = ["edition2024"]
+
+[package]
+name = "nft-mint"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+doctest = false
+
+
+[dependencies]
+soroban-sdk = "21.7.4"
+
+[dev-dependencies]
+soroban-sdk = { version = "21.7.4", features = ["testutils"] }
