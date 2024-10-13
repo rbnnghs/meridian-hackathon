@@ -5,8 +5,9 @@ import { animals, Animal } from '../../data/animals';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Image from 'next/image';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+// Removed Carousel imports
+// import { Carousel } from 'react-responsive-carousel';
+// import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { ProgressBar } from '../../components/ProgressBar';
 
 interface MissionDetailProps {
@@ -28,25 +29,27 @@ const MissionDetail: NextPage<MissionDetailProps> = ({ mission, animal }) => {
       <Navbar />
 
       <main className="flex-grow bg-gray-100">
-        {/* Mission Information Section */}
-        <section className="py-10">
+      <section className="py-20">
+
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center">
-              {/* Media Gallery */}
+              {/* Single Image Display */}
               <div className="w-full md:w-1/2 mb-6 md:mb-0">
-                <Carousel showThumbs={false} infiniteLoop useKeyboardArrows autoPlay>
-                  {mission.media.map((mediaUrl, index) => (
-                    <div key={index} className="relative w-full h-64 md:h-96">
-                      <Image
-                        src={mediaUrl}
-                        alt={`Mission Media ${index + 1}`}
-                        layout="fill"
-                        objectFit="cover"
-                        className="rounded-lg"
-                      />
-                    </div>
-                  ))}
-                </Carousel>
+                {mission.media && mission.media.length > 0 ? (
+                  <div className="relative w-full h-64 md:h-96">
+                    <Image
+                      src='/AntiPoach.jpg' // Displaying the first image
+                      alt={`${mission.title} Image`}
+                      layout="fill"
+                      objectFit="cover"
+                      className="rounded-lg"
+                    />
+                  </div>
+                ) : (
+                  <div className="relative w-full h-64 md:h-96 bg-gray-300 rounded-lg flex items-center justify-center">
+                    <span className="text-gray-700">No image available</span>
+                  </div>
+                )}
               </div>
 
               {/* Mission Details */}
