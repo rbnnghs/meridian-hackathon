@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { animals, Animal } from '../../data/animals';
 import { missions, RescueMission } from '../../data/missions';
@@ -9,8 +9,7 @@ import Image from 'next/image';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { ProgressBar } from '../../components/ProgressBar';
-import { Chart } from 'react-chartjs-2';
-import { Bar } from 'recharts';
+import Link from 'next/link';
 
 interface AnimalDetailProps {
   animal: Animal;
@@ -18,17 +17,59 @@ interface AnimalDetailProps {
 }
 
 const AnimalDetail: NextPage<AnimalDetailProps> = ({ animal, relatedMissions }) => {
-  const [donationAmount, setDonationAmount] = useState<number>(0);
+  const [donationAmount, setDonationAmount] = useState<string>('');
+  const [totalDonations, setTotalDonations] = useState<number>(0);
   const router = useRouter();
+  const fundraisingGoal = 5000; // This should ideally come from the animal data or a separate config
+
+  useEffect(() => {
+    // Calculate total donations from related missions
+    const total = relatedMissions.reduce((acc, mission) => acc + mission.fundsRaised, 0);
+    setTotalDonations(total);
+  }, [relatedMissions]);
 
   if (router.isFallback) {
     return <div>Loading...</div>;
   }
 
   const handleDonate = () => {
-    alert(`Thank you for donating ${donationAmount} XLM to ${animal.name}!`);
+    const amount = parseFloat(donationAmount);
+    if (isNaN(amount) || amount <= 0) {
+      alert('Please enter a valid donation amount.');
+      return;
+    }
+    alert(`Thank you for donating ${amount} XLM to ${animal.name}!`);
     // Implement actual donation logic here
+    setTotalDonations(prevTotal => prevTotal + amount);
+    setDonationAmount('');
   };
+
+  const carouselItems = [
+    animal.image && (
+      <div key="main-image" className="relative w-full h-64 md:h-96">
+        <Image
+          src={animal.image}
+          alt={animal.name}
+          layout="fill"
+          objectFit="cover"
+          className="rounded-lg"
+        />
+      </div>
+    ),
+    ...relatedMissions.flatMap((mission) => 
+      mission.media.map((mediaUrl, index) => (
+        <div key={`mission-${mission.id}-media-${index}`} className="relative w-full h-64 md:h-96">
+          <Image
+            src={mediaUrl}
+            alt={`${animal.name} media ${index + 1}`}
+            layout="fill"
+            objectFit="cover"
+            className="rounded-lg"
+          />
+        </div>
+      ))
+    )
+  ].filter(Boolean); // Remove any null items (in case animal.image is null)
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -42,29 +83,7 @@ const AnimalDetail: NextPage<AnimalDetailProps> = ({ animal, relatedMissions }) 
               {/* Media Gallery */}
               <div className="w-full md:w-1/2 mb-6 md:mb-0">
                 <Carousel showThumbs={false} infiniteLoop useKeyboardArrows autoPlay>
-                  {animal.image && (
-                    <div className="relative w-full h-64 md:h-96">
-                      <Image
-                        src={animal.image}
-                        alt={animal.name}
-                        layout="fill"
-                        objectFit="cover"
-                        className="rounded-lg"
-                      />
-                    </div>
-                  )}
-                  {/* Additional media can be added here */}
-                  {relatedMissions.flatMap((mission) => mission.media).map((mediaUrl, index) => (
-                    <div key={index} className="relative w-full h-64 md:h-96">
-                      <Image
-                        src={mediaUrl}
-                        alt={`${animal.name} media ${index + 1}`}
-                        layout="fill"
-                        objectFit="cover"
-                        className="rounded-lg"
-                      />
-                    </div>
-                  ))}
+                  {carouselItems}
                 </Carousel>
               </div>
 
@@ -78,8 +97,8 @@ const AnimalDetail: NextPage<AnimalDetailProps> = ({ animal, relatedMissions }) 
                 
                 {/* Progress Bar for Fundraising Goal */}
                 <div className="mb-4">
-                  <p className="mb-2">Fundraising Goal: 5000 XLM</p>
-                  <ProgressBar completed={3000} total={5000} />
+                  <p className="mb-2">Fundraising Goal: {fundraisingGoal} XLM</p>
+                  <ProgressBar completed={totalDonations} total={fundraisingGoal} />
                 </div>
 
                 {/* Donation Section */}
@@ -87,9 +106,10 @@ const AnimalDetail: NextPage<AnimalDetailProps> = ({ animal, relatedMissions }) 
                   <h2 className="text-2xl font-semibold mb-2">Donate to Support {animal.name}</h2>
                   <input
                     type="number"
-                    min="1"
+                    min="0.1"
+                    step="0.1"
                     value={donationAmount}
-                    onChange={(e) => setDonationAmount(parseInt(e.target.value))}
+                    onChange={(e) => setDonationAmount(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded mb-2"
                     placeholder="Enter amount in XLM"
                   />
@@ -126,26 +146,6 @@ const AnimalDetail: NextPage<AnimalDetailProps> = ({ animal, relatedMissions }) 
           </div>
         </section>
 
-        {/* Media Gallery Section */}
-        <section className="py-10">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-6">Media Gallery</h2>
-            <Carousel showThumbs={false} infiniteLoop useKeyboardArrows autoPlay>
-              {relatedMissions.flatMap((mission) => mission.media).map((mediaUrl, index) => (
-                <div key={index} className="relative w-full h-64 md:h-96">
-                  <Image
-                    src={mediaUrl}
-                    alt={`${animal.name} media ${index + 1}`}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-lg"
-                  />
-                </div>
-              ))}
-            </Carousel>
-          </div>
-        </section>
-
         {/* Related Rescue Missions */}
         <section className="py-10 bg-gray-100">
           <div className="container mx-auto px-4">
@@ -157,7 +157,7 @@ const AnimalDetail: NextPage<AnimalDetailProps> = ({ animal, relatedMissions }) 
                   <p className="text-gray-700 mb-2">{mission.description}</p>
                   <p className="text-gray-600 mb-2"><strong>Status:</strong> {mission.status}</p>
                   <Link href={`/missions/${mission.id}`}>
-                    <a className="text-green-600 hover:underline">View Details</a>
+                    <span className="text-green-600 hover:underline">View Details</span>
                   </Link>
                 </div>
               ))}
@@ -180,7 +180,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const id = parseInt(params?.id as string, 10);
+  const id = params?.id ? parseInt(params.id as string, 10) : null;
   const animal = animals.find((a) => a.id === id);
 
   if (!animal) {

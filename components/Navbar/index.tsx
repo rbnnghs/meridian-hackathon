@@ -6,7 +6,7 @@ const Navbar = () => {
     <nav className="bg-white">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/">
-          <span className="text-2xl font-bold text-green-600">FaunaChain</span>
+          <span className="text-2xl font-bold text-green-600">Beacon</span>
         </Link>
         <div className="space-x-4">
           <Link href="/">

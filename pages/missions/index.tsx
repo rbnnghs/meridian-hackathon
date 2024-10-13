@@ -21,7 +21,7 @@ const MissionsPage: NextPage = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Head>
-        <title>FaunaChain - Rescue Missions</title>
+        <title>Beacon - Rescue Missions</title>
         <meta name="description" content="Explore and support various rescue missions for endangered animals." />
         <link rel="icon" href="/favicon.ico" />
       </Head>

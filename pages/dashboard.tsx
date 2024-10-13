@@ -26,8 +26,8 @@ const Dashboard: NextPage<DashboardProps> = ({ userDonations }) => {
   return (
     <div className="flex flex-col min-h-screen">
       <Head>
-        <title>FaunaChain - Dashboard</title>
-        <meta name="description" content="View your contributions and owned NFTs on FaunaChain." />
+        <title>Beacon - Dashboard</title>
+        <meta name="description" content="View your contributions and owned NFTs on Beacon." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

@@ -23,7 +23,7 @@ const ReportsPage: NextPage = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Head>
-        <title>FaunaChain - Impact Reports</title>
+        <title>Beacon - Impact Reports</title>
         <meta name="description" content="Access detailed impact reports on rescue missions and your contributions." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
