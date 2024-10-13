@@ -143,7 +143,7 @@ const animals = [
           <link rel="icon" href="/favicon.ico" />
         </Head>
   
-        <Navbar />
+        <Navbar theme="default" />
   
         <main className="flex-grow">
           <section className="py-20">

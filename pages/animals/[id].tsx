@@ -6,8 +6,6 @@ import { missions, RescueMission } from '../../data/missions';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Image from 'next/image';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { ProgressBar } from '../../components/ProgressBar';
 import Link from 'next/link';
 
@@ -20,7 +18,7 @@ const AnimalDetail: NextPage<AnimalDetailProps> = ({ animal, relatedMissions }) 
   const [donationAmount, setDonationAmount] = useState<string>('');
   const [totalDonations, setTotalDonations] = useState<number>(0);
   const router = useRouter();
-  const fundraisingGoal = 5000; // This should ideally come from the animal data or a separate config
+  const fundraisingGoal = 5000; // Ideally, this should come from the animal data or a separate config
 
   useEffect(() => {
     // Calculate total donations from related missions
@@ -44,33 +42,6 @@ const AnimalDetail: NextPage<AnimalDetailProps> = ({ animal, relatedMissions }) 
     setDonationAmount('');
   };
 
-  const carouselItems = [
-    animal.image && (
-      <div key="main-image" className="relative w-full h-64 md:h-96">
-        <Image
-          src={animal.image}
-          alt={animal.name}
-          layout="fill"
-          objectFit="cover"
-          className="rounded-lg"
-        />
-      </div>
-    ),
-    ...relatedMissions.flatMap((mission) => 
-      mission.media.map((mediaUrl, index) => (
-        <div key={`mission-${mission.id}-media-${index}`} className="relative w-full h-64 md:h-96">
-          <Image
-            src={mediaUrl}
-            alt={`${animal.name} media ${index + 1}`}
-            layout="fill"
-            objectFit="cover"
-            className="rounded-lg"
-          />
-        </div>
-      ))
-    )
-  ].filter(Boolean); // Remove any null items (in case animal.image is null)
-
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -80,11 +51,17 @@ const AnimalDetail: NextPage<AnimalDetailProps> = ({ animal, relatedMissions }) 
         <section className="py-10">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center">
-              {/* Media Gallery */}
+              {/* Single Image Display */}
               <div className="w-full md:w-1/2 mb-6 md:mb-0">
-                <Carousel showThumbs={false} infiniteLoop useKeyboardArrows autoPlay>
-                  {carouselItems}
-                </Carousel>
+                <div className="relative w-full h-64 md:h-96">
+                  <Image
+                    src={animal.image}
+                    alt={animal.name}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-lg"
+                  />
+                </div>
               </div>
 
               {/* Animal Details */}
