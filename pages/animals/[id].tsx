@@ -17,17 +17,17 @@ interface AnimalDetailProps {
 const AnimalDetail: NextPage<AnimalDetailProps> = ({ animal, relatedMissions }) => {
   const [donationAmount, setDonationAmount] = useState<string>('');
   const [totalDonations, setTotalDonations] = useState<number>(0);
+  const [activeTab, setActiveTab] = useState<string>('about');
   const router = useRouter();
-  const fundraisingGoal = 5000; // Ideally, this should come from the animal data or a separate config
+  const fundraisingGoal = 5000;
 
   useEffect(() => {
-    // Calculate total donations from related missions
     const total = relatedMissions.reduce((acc, mission) => acc + mission.fundsRaised, 0);
     setTotalDonations(total);
   }, [relatedMissions]);
 
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return <div className="flex items-center justify-center h-screen">Loading...</div>;
   }
 
   const handleDonate = () => {
@@ -37,109 +37,150 @@ const AnimalDetail: NextPage<AnimalDetailProps> = ({ animal, relatedMissions }) 
       return;
     }
     alert(`Thank you for donating ${amount} XLM to ${animal.name}!`);
-    // Implement actual donation logic here
     setTotalDonations(prevTotal => prevTotal + amount);
     setDonationAmount('');
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-50 to-green-50">
       <Navbar />
+      <main className="flex-grow container mx-auto px-4 py-8">
+      <section className="py-20">
 
-      <main className="flex-grow bg-gray-100">
-        {/* Animal Information Section */}
-        <section className="py-10">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row items-center">
-              {/* Single Image Display */}
-              <div className="w-full md:w-1/2 mb-6 md:mb-0">
-                <div className="relative w-full h-64 md:h-96">
-                  <Image
-                    src={animal.image}
-                    alt={animal.name}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-lg"
-                  />
-                </div>
-              </div>
+        <button 
+          onClick={() => router.back()} 
+          className="mb-6 flex items-center text-blue-600 hover:text-blue-800"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+          </svg>
+          Back
+        </button>
 
-              {/* Animal Details */}
-              <div className="w-full md:w-1/2 md:pl-12">
-                <h1 className="text-4xl font-bold mb-4">{animal.name}</h1>
-                <p className="text-gray-700 mb-2"><strong>Species:</strong> {animal.species}</p>
-                <p className="text-gray-700 mb-2"><strong>Status:</strong> {animal.status}</p>
-                <p className="text-gray-700 mb-4"><strong>Habitat:</strong> {animal.habitat}</p>
-                <p className="text-gray-700 mb-4"><strong>Threats:</strong> {animal.threats.join(', ')}</p>
-                
-                {/* Progress Bar for Fundraising Goal */}
-                <div className="mb-4">
-                  <p className="mb-2">Fundraising Goal: {fundraisingGoal} XLM</p>
-                  <ProgressBar completed={totalDonations} total={fundraisingGoal} />
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="relative w-full h-96 rounded-lg overflow-hidden">
+            <Image
+              src={animal.image}
+              alt={animal.name}
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
 
-                {/* Donation Section */}
-                <div className="mb-6">
-                  <h2 className="text-2xl font-semibold mb-2">Donate to Support {animal.name}</h2>
-                  <input
-                    type="number"
-                    min="0.1"
-                    step="0.1"
-                    value={donationAmount}
-                    onChange={(e) => setDonationAmount(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded mb-2"
-                    placeholder="Enter amount in XLM"
-                  />
-                  <button
-                    onClick={handleDonate}
-                    className="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
-                  >
-                    Donate
-                  </button>
-                </div>
+          <div>
+            <h1 className="text-4xl font-bold mb-4">{animal.name}</h1>
+            <div className="flex space-x-4 mb-4">
+              <button className="flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                </svg>
+                Favorite
+              </button>
+              <button className="flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+                </svg>
+                Share
+              </button>
+            </div>
+            <div className="bg-white p-6 rounded-lg mb-6">
+              <h2 className="text-xl font-semibold mb-2">Quick Facts</h2>
+              <p><strong>Species:</strong> {animal.species}</p>
+              <p><strong>Status:</strong> {animal.status}</p>
+              <p><strong>Habitat:</strong> {animal.habitat}</p>
+              <p><strong>Threats:</strong> {animal.threats.join(', ')}</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg">
+              <h2 className="text-2xl font-semibold mb-2">Support {animal.name}</h2>
+              <ProgressBar completed={totalDonations} total={fundraisingGoal} />
+              <p className="text-sm text-gray-600 mt-1">
+                {totalDonations} XLM raised of {fundraisingGoal} XLM goal
+              </p>
+              <div className="flex mt-4">
+                <input
+                  type="number"
+                  min="0.1"
+                  step="0.1"
+                  value={donationAmount}
+                  onChange={(e) => setDonationAmount(e.target.value)}
+                  placeholder="Enter amount in XLM"
+                  className="flex-grow mr-2 px-3 py-2 border border-gray-300 rounded-md"
+                />
+                <button 
+                  onClick={handleDonate}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Donate
+                </button>
               </div>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* Impact Statistics */}
-        <section className="py-10 bg-white">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-6">Impact Statistics</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-gray-100 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold mb-2">Rescued Animals</h3>
-                <p className="text-4xl font-bold">{relatedMissions.reduce((acc, mission) => acc + mission.impactStatistics.rescuedAnimals, 0)}</p>
-              </div>
-              <div className="bg-gray-100 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold mb-2">Habitat Restored (hectares)</h3>
-                <p className="text-4xl font-bold">{relatedMissions.reduce((acc, mission) => acc + mission.impactStatistics.habitatRestored, 0)}</p>
-              </div>
-              <div className="bg-gray-100 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold mb-2">Anti-Poaching Patrols</h3>
-                <p className="text-4xl font-bold">{relatedMissions.reduce((acc, mission) => acc + mission.impactStatistics.antiPoachingPatrols, 0)}</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Related Rescue Missions */}
-        <section className="py-10 bg-gray-100">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-6">Related Rescue Missions</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {relatedMissions.map((mission) => (
-                <div key={mission.id} className="bg-white p-6 rounded-lg">
-                  <h3 className="text-xl font-semibold mb-2">{mission.title}</h3>
-                  <p className="text-gray-700 mb-2">{mission.description}</p>
-                  <p className="text-gray-600 mb-2"><strong>Status:</strong> {mission.status}</p>
-                  <Link href={`/missions/${mission.id}`}>
-                    <span className="text-green-600 hover:underline">View Details</span>
-                  </Link>
-                </div>
+        <div className="mt-12">
+          <div className="border-b border-gray-200">
+            <nav className="-mb-px flex space-x-8">
+              {['About', 'Impact', 'Rescue Missions'].map((tab) => (
+                <button
+                  key={tab.toLowerCase()}
+                  onClick={() => setActiveTab(tab.toLowerCase())}
+                  className={`${
+                    activeTab === tab.toLowerCase()
+                      ? 'border-blue-500 text-blue-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+                >
+                  {tab}
+                </button>
               ))}
-            </div>
+            </nav>
           </div>
+
+          <div className="mt-6">
+            {activeTab === 'about' && (
+              <div className="bg-white p-6 rounded-lg">
+                <h2 className="text-2xl font-semibold mb-4">About {animal.name}</h2>
+                <p>{animal.description}</p>
+              </div>
+            )}
+
+            {activeTab === 'impact' && (
+              <div className="bg-white p-6 rounded-lg">
+                <h2 className="text-2xl font-semibold mb-4">Impact Statistics</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="text-center">
+                    <h3 className="text-xl font-semibold mb-2">Rescued Animals</h3>
+                    <p className="text-4xl font-bold">{relatedMissions.reduce((acc, mission) => acc + mission.impactStatistics.rescuedAnimals, 0)}</p>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-xl font-semibold mb-2">Habitat Restored</h3>
+                    <p className="text-4xl font-bold">{relatedMissions.reduce((acc, mission) => acc + mission.impactStatistics.habitatRestored, 0)} ha</p>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-xl font-semibold mb-2">Anti-Poaching Patrols</h3>
+                    <p className="text-4xl font-bold">{relatedMissions.reduce((acc, mission) => acc + mission.impactStatistics.antiPoachingPatrols, 0)}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'rescue missions' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {relatedMissions.map((mission) => (
+                  <div key={mission.id} className="bg-white p-6 rounded-lg">
+                    <h3 className="text-xl font-semibold mb-2">{mission.title}</h3>
+                    <p className="text-sm text-gray-600 mb-2">{mission.status}</p>
+                    <p className="mb-4">{mission.description}</p>
+                    <Link href={`/missions/${mission.id}`}>
+                      <span className="text-blue-600 hover:text-blue-800">View Details</span>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
         </section>
       </main>
 
